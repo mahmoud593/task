@@ -62,7 +62,7 @@ class _ItemsPageState extends State<ItemsPage> {
                     ),
                   ),
                   SizedBox(width: MediaQuery.of(context).size.height * 0.02),
-                  AddNewItemButton(),
+                  MediaQuery.sizeOf(context).width <= 500?Container():  AddNewItemButton(),
                 ],
               ),
             ),
@@ -131,119 +131,96 @@ class _TopNavBarState extends State<TopNavBar> {
       ),
       child: Row(
         children: [
+          // Menu Icon (Visible only on small screens)
+          MediaQuery.sizeOf(context).width <= 500 ?Icon(Icons.menu):Container(),
+          SizedBox(width: MediaQuery.of(context).size.height * 0.01),
+
+          // Logo
           Image(
             height: MediaQuery.of(context).size.height * 0.05,
             image: NetworkImage(
               'https://firebasestorage.googleapis.com/v0/b/gas-app-e12b7.appspot.com/o/logo.png?alt=media&token=6bb39240-c032-4b36-bd05-b69da5b91ea6',
             ),
           ),
+
           Spacer(),
-          Row(
+
+          // Menu Items (Visible only on large screens)
+
+                 MediaQuery.sizeOf(context).width <= 500?
+                 const SizedBox.shrink():Row(
+                   mainAxisAlignment: MainAxisAlignment.center,
+                   children: List.generate(items.length, (i) {
+                     return Padding(
+                       padding: EdgeInsets.symmetric(
+                         horizontal: MediaQuery.of(context).size.width * 0.015,
+                       ),
+                       child: Column(
+                         children: [
+                           GestureDetector(
+                             onTap: () {
+                               setState(() {
+                                 index = List.generate(items.length, (j) => j == i);
+                               });
+                             },
+                             child: Text(
+                               items[i],
+                               style: TextStyle(
+                                 fontSize: 14,
+                                 color: index[i] ? Colors.white : Color(0xFF999999),
+                               ),
+                             ),
+                           ),
+                           const Spacer(),
+                           if (index[i])
+                             Container(
+                               width: MediaQuery.of(context).size.height * 0.05,
+                               height: MediaQuery.of(context).size.height * 0.005,
+                               color: const Color(0xFFFFC268),
+                             ),
+                           // Right-side icons
+                           VerticalDivider(
+                             color: Color(0xFF484848),
+                             thickness: 1,
+                           ),
+                         ],
+                       ),
+                     );
+                   }),
+                 ),
+
+
+          SizedBox(width: MediaQuery.of(context).size.height * 0.02),
+          Image(
+            color: Colors.white,
+            height: MediaQuery.of(context).size.height * 0.035,
+            image: NetworkImage(
+              'https://firebasestorage.googleapis.com/v0/b/gas-app-e12b7.appspot.com/o/Icons.png?alt=media&token=59e510cb-5f21-4534-8ec2-8ea51e51af48',
+            ),
+          ),
+          SizedBox(width: MediaQuery.of(context).size.height * 0.04),
+          Image(
+            color: Colors.white,
+            height: MediaQuery.of(context).size.height * 0.035,
+            image: NetworkImage(
+              'https://firebasestorage.googleapis.com/v0/b/gas-app-e12b7.appspot.com/o/Icons%20(1).png?alt=media&token=346439ab-1ff4-43e8-a4ab-5f9c473eaad5',
+            ),
+          ),
+          SizedBox(width: MediaQuery.of(context).size.height * 0.02),
+          VerticalDivider(
+            color: Color(0xFF484848),
+            thickness: 1,
+          ),
+          SizedBox(width: MediaQuery.of(context).size.height * 0.02),
+          Image(
+            height: MediaQuery.of(context).size.height * 0.045,
+            image: NetworkImage(
+              'https://firebasestorage.googleapis.com/v0/b/gas-app-e12b7.appspot.com/o/Frame%2077134.png?alt=media&token=8c21e50d-10b2-434b-8e18-61d64f177976',
+            ),
+          ),
+          SizedBox(width: MediaQuery.of(context).size.height * 0.02),
+          MediaQuery.sizeOf(context).width <= 500?SizedBox() : Row(
             children: [
-              for (int i = 0; i < items.length; i++)
-                 Padding(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: MediaQuery.of(context).size.width * 0.015),
-                  child: Column(
-                    children: [
-                      GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              if (items[i] == 'Items') {
-                                index = [
-                                  true,
-                                  false,
-                                  false,
-                                  false,
-                                  false,
-                                ];
-                              } else if (items[i] == 'Pricing') {
-                                index = [
-                                  false,
-                                  true,
-                                  false,
-                                  false,
-                                  false,
-                                ];
-                              } else if (items[i] == 'Info') {
-                                index = [
-                                  false,
-                                  false,
-                                  true,
-                                  false,
-                                  false,
-                                ];
-                              } else if (items[i] == 'Tasks') {
-                                index = [
-                                  false,
-                                  false,
-                                  false,
-                                  true,
-                                  false,
-                                ];
-                              } else if (items[i] == 'Analytics') {
-                                index = [
-                                  false,
-                                  false,
-                                  false,
-                                  false,
-                                  true,
-                                ];
-                              }
-                            });
-                          },
-                          child: Text(items[i],
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: index[i] == true
-                                    ? Colors.white
-                                    : Color(0xFF999999),
-                              ))),
-                      Spacer(),
-                      index[i] == true
-                          ? Container(
-                              width: MediaQuery.of(context).size.height * 0.05,
-                              height:
-                                  MediaQuery.of(context).size.height * 0.005,
-                              color: Color(0xFFFFC268),
-                            )
-                          : Container(),
-                    ],
-                  ),
-                ),
-              VerticalDivider(
-                color: Color(0xFF484848),
-                thickness: 1,
-              ),
-              SizedBox(width: MediaQuery.of(context).size.height * 0.02),
-              Image(
-                color: Colors.white,
-                height: MediaQuery.of(context).size.height * 0.035,
-                image: NetworkImage(
-                  'https://firebasestorage.googleapis.com/v0/b/gas-app-e12b7.appspot.com/o/Icons.png?alt=media&token=59e510cb-5f21-4534-8ec2-8ea51e51af48',
-                ),
-              ),
-              SizedBox(width: MediaQuery.of(context).size.height * 0.04),
-              Image(
-                color: Colors.white,
-                height: MediaQuery.of(context).size.height * 0.035,
-                image: NetworkImage(
-                  'https://firebasestorage.googleapis.com/v0/b/gas-app-e12b7.appspot.com/o/Icons%20(1).png?alt=media&token=346439ab-1ff4-43e8-a4ab-5f9c473eaad5',
-                ),
-              ),
-              SizedBox(width: MediaQuery.of(context).size.height * 0.02),
-              VerticalDivider(
-                color: Color(0xFF484848),
-                thickness: 1,
-              ),
-              SizedBox(width: MediaQuery.of(context).size.height * 0.02),
-              Image(
-                height: MediaQuery.of(context).size.height * 0.045,
-                image: NetworkImage(
-                  'https://firebasestorage.googleapis.com/v0/b/gas-app-e12b7.appspot.com/o/Frame%2077134.png?alt=media&token=8c21e50d-10b2-434b-8e18-61d64f177976',
-                ),
-              ),
-              SizedBox(width: MediaQuery.of(context).size.height * 0.02),
               const Text('John Doe',
                   style: TextStyle(
                     fontSize: 14,
@@ -254,7 +231,7 @@ class _TopNavBarState extends State<TopNavBar> {
                 Icons.keyboard_arrow_down_sharp,
                 size: MediaQuery.of(context).size.height * 0.03,
                 color: Colors.white,
-              )
+              ),
             ],
           ),
         ],
@@ -262,6 +239,7 @@ class _TopNavBarState extends State<TopNavBar> {
     );
   }
 }
+
 
 class AddNewItemButton extends StatelessWidget {
   @override
